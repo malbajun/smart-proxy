@@ -1,0 +1,32 @@
+--- smart_proxy.gemspec~	2020-04-02 08:05:06.000000000 +0000
++++ smart_proxy.gemspec	2020-06-15 10:54:53.896000000 +0000
+@@ -16,6 +16,29 @@ Gem::Specification.new do |s|
+   s.add_dependency 'rack', '>= 1.3'
+   s.add_dependency 'sinatra'
+   s.add_dependency 'logging'
++  s.add_dependency 'rake', '~> 13.0'
++  s.add_dependency 'concurrent-ruby', '~> 1.1'
++  s.add_dependency 'ffi', '~> 1.12'
++  s.add_dependency 'dhcpsapi', '~> 0.0.11'
++  s.add_dependency 'gssapi', '~> 1.2'
++  s.add_dependency 'journald-native', '~> 1.0'
++  s.add_dependency 'journald-logger', '~> 2.0'
++  s.add_dependency 'jwt', '~> 2.2'
++  s.add_dependency 'little-plugger', '~> 1.1'
++  s.add_dependency 'multi_json', '~> 1.14'
++  s.add_dependency 'logging-journald', '~> 2.0'
++  s.add_dependency 'ruby2_keywords', '~> 0.0'
++  s.add_dependency 'mustermann', '~> 1.1'
++  s.add_dependency 'rack-protection', '~> 2.0'
++  s.add_dependency 'rake-compiler', '~> 1.1'
++  s.add_dependency 'rb-inotify', '~> 0.9'
++  s.add_dependency 'rb-kqueue', '~> 0.2'
++  s.add_dependency 'rkerberos', '~> 0.1'
++  s.add_dependency 'rsec', '~> 0.4'
++  s.add_dependency 'ruby-libvirt', '~> 0.7'
++  s.add_dependency 'rubyipmi', '~> 0.10'
++  s.add_dependency 'tilt', '~> 2.0'
++  s.add_dependency 'xmlrpc', '~> 0.3'
+   s.description = <<EOF
+ Foreman Proxy is used via The Foreman Project, it allows Foreman to manage
+ Remote DHCP, DNS, TFTP and Puppet servers via a REST API
