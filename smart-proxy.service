@@ -1,15 +1,14 @@
 [Unit]
-Description=Smart Proxy
+Description=Foreman Smart Proxy
 Documentation=https://projects.theforeman.org/projects/smart-proxy/wiki
 After=network.target remote-fs.target nss-lookup.target
-Requires=foreman.service
 
 [Service]
 Type=forking
 User=_foreman
 NotifyAccess=all
 PIDFile=/run/smart-proxy/smart-proxy.pid
-WorkingDirectory=#libdir
+WorkingDirectory=/var/lib/smart-proxy
 ExecStart=/bin/bash -lc 'exec /usr/bin/smart-proxy'
 ExecReload=/bin/kill -HUP $MAINPID
 KillMode=process
