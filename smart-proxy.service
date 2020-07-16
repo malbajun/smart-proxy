@@ -1,11 +1,12 @@
 [Unit]
 Description=Foreman Smart Proxy
 Documentation=https://projects.theforeman.org/projects/smart-proxy/wiki
-After=network.target remote-fs.target nss-lookup.target
+After=network.target remote-fs.target nss-lookup.target puppet.service puppetserver.service
+Wants=puppet.service puppetserver.service
 
 [Service]
 Type=forking
-User=_foreman
+User=_smartforeman
 NotifyAccess=all
 PIDFile=/run/smart-proxy/smart-proxy.pid
 WorkingDirectory=/var/lib/smart-proxy

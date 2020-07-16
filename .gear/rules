@@ -2,3 +2,4 @@ tar: @version@:.
 copy?: *.service
 copy?: *.patch
 copy?: *.yml
+copy?: *.conf

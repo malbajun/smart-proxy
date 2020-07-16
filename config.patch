@@ -103,7 +103,7 @@ index 0000000..140a3bb
 +# Log buffer configuration is in core file (settings.yml)
 diff --git a/config/settings.d/puppet.yml b/config/settings.d/puppet.yml
 new file mode 100755
-index 0000000..5ed068a
+index 0000000..afcbb51
 --- /dev/null
 +++ b/config/settings.d/puppet.yml
 @@ -0,0 +1,12 @@
@@ -118,41 +118,42 @@ index 0000000..5ed068a
 +#   puppet_proxy_customrun   (calls a custom command with args)
 +#:use_provider: puppet_proxy_customrun
 +
-+:puppet_version: 6.15.0
++:puppet_version: 6.17.0
 diff --git a/config/settings.d/puppet_proxy_puppet_api.yml b/config/settings.d/puppet_proxy_puppet_api.yml
 new file mode 100755
-index 0000000..ded94c1
+index 0000000..acc20d5
 --- /dev/null
 +++ b/config/settings.d/puppet_proxy_puppet_api.yml
 @@ -0,0 +1,11 @@
 +---
 +# URL of the puppet master itself for API requests.
-+:puppet_url: https://server9-3.test.alt:8140
++#:puppet_url: https://sample.server.test:8140
 +#
 +# SSL certificates used to access the puppet API
-+:puppet_ssl_ca: /etc/puppet/ssl/certs/ca.pem
-+:puppet_ssl_cert: /etc/puppet/ssl/certs/server9-3.test.alt.pem
-+:puppet_ssl_key: /etc/puppet/ssl/private_keys/server9-3.test.alt.pem
++#:puppet_ssl_ca: /etc/puppet/ssl/certs/ca.pem
++#:puppet_ssl_cert: /etc/puppet/ssl/certs/sample.server.test.pem
++#:puppet_ssl_key: /etc/puppet/ssl/private_keys/sample.server.test.pem
 +#
 +# Smart Proxy api timeout when Puppet's environment classes api is used and classes cache is disabled
 +#:api_timeout: 30
 diff --git a/config/settings.d/puppetca.yml b/config/settings.d/puppetca.yml
 new file mode 100755
-index 0000000..22a092a
+index 0000000..0962004
 --- /dev/null
 +++ b/config/settings.d/puppetca.yml
-@@ -0,0 +1,11 @@
+@@ -0,0 +1,12 @@
 +---
++# PuppetCA management
 +# Can be true, false, or http/https to enable just one of the protocols
-+:enabled: false
++:enabled: https
 +
 +# valid providers:
 +#   - puppetca_hostname_whitelisting (verify CSRs based on a hostname whitelist)
 +#   - puppetca_token_whitelisting (verify CSRs based on a token whitelist)
-+#:use_provider: puppetca_hostname_whitelisting
++:use_provider: puppetca_hostname_whitelisting
 +
 +# Puppet version used
-+#:puppet_version: '4.1'
++:puppet_version: 6.17.0
 diff --git a/config/settings.d/realm.yml b/config/settings.d/realm.yml
 new file mode 100755
 index 0000000..05ff412
@@ -196,17 +197,17 @@ index 0000000..aeab55a
 +#:template_url: http://smart-proxy.example.com:8000
 diff --git a/config/settings.d/tftp.yml b/config/settings.d/tftp.yml
 new file mode 100755
-index 0000000..e660113
+index 0000000..1c74d2d
 --- /dev/null
 +++ b/config/settings.d/tftp.yml
 @@ -0,0 +1,19 @@
 +---
 +# Can be true, false, or http/https to enable just one of the protocols
-+:enabled: true
++:enabled: false
 +
 +:tftproot: /var/lib/tftpboot
 +# Defines the TFTP Servername to use, overrides the name in the subnet declaration
-+:tftp_servername: server9-3.test.alt
++:tftp_servername: sample.server.test
 +
 +# Defines the default read timeout in seconds needed to download tftp artifacts
 +# like initrd and vmlinuz. Default value 60 seconds
