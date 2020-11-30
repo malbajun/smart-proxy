@@ -4,7 +4,7 @@
 
 Name:          gem-%pkgname
 Version:       2.1.0
-Release:       alt2
+Release:       alt2.1
 Summary:       RESTful proxies for DNS, DHCP, TFTP, BMC and Puppet
 License:       MIT
 Group:         Development/Ruby
@@ -17,6 +17,7 @@ Source:        %name-%version.tar
 Source1:       settings.yml
 Source2:       %pkgname.service
 Source3:       %pkgname.conf
+Source4:       puppetca_http_api.yml
 Patch:         %version.patch
 Patch1:        config.patch
 Patch2:        config-path.patch
@@ -25,6 +26,7 @@ BuildRequires(pre): rpm-build-ruby
 %gem_replace_version json ~> 2.3.1
 %add_findreq_skiplist %ruby_gemslibdir/**/*
 %add_findprov_skiplist %ruby_gemslibdir/**/*
+Conflicts:     gem-%pkgname-compat
 
 %description
 Smart Proxy is a free open source project that provides restful API to
@@ -54,6 +56,8 @@ Summary(ru_RU.UTF-8): Исполнямка для самоцвета %gemname
 Group:         Development/Ruby
 BuildArch:     noarch
 
+Conflicts:     %pkgname-compat
+
 %description   -n %pkgname
 Executable file for %gemname gem.
 
@@ -67,6 +71,8 @@ Summary(ru_RU.UTF-8): Файлы сведений для самоцвета %gem
 Group:         Development/Documentation
 BuildArch:     noarch
 
+Conflicts:     gem-%pkgname-compat-doc
+
 %description   doc
 Documentation files for %gemname gem.
 
@@ -79,6 +85,8 @@ Documentation files for %gemname gem.
 %patch
 %patch1 -p1
 %patch2 -p1
+# set default protocol to http
+sed "s/https/http/" -i config/settings.d/puppetca.yml
 
 %build
 %ruby_build
@@ -94,6 +102,7 @@ install -Dm644 %SOURCE3 %buildroot%_tmpfilesdir/%pkgname.conf
 install -Dm750 %buildroot%ruby_gemlibdir/Gemfile %buildroot%_localstatedir/%pkgname/Gemfile
 #TODO move to setup.rb
 cp -p config/settings.d/*.yml %buildroot%_sysconfdir/%pkgname/config/settings.d
+install -Dm644 %SOURCE4 %buildroot%_sysconfdir/%pkgname/config/settings.d/puppetca_http_api.yml
 
 %check
 %ruby_test
@@ -105,6 +114,7 @@ getent passwd _smartforeman >/dev/null || \
    %_sbindir/useradd -r -G puppet,foreman -d %_localstatedir/%pkgname -s /bin/bash -c "Foreman" _smartforeman
 
 %post          -n %pkgname
+rm -rf %_localstatedir/%pkgname/Gemfile.lock
 %post_service %pkgname
 
 %preun         -n %pkgname
@@ -132,6 +142,11 @@ getent passwd _smartforeman >/dev/null || \
 
 
 %changelog
+* Mon Nov 30 2020 Pavel Skrylev <majioa@altlinux.org> 2.1.0-alt2.1
+- + requires dep to facter executable
+- + explicitly the other required gems to Gemfile as a patch
+- + conflicts to compat packages
+
 * Thu Jul 16 2020 Pavel Skrylev <majioa@altlinux.org> 2.1.0-alt2
 - + conf file to keep rights on some folders after reset
 - + _smartforeman user with home of /var/lib/smart-proxy

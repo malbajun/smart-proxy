@@ -1,9 +1,10 @@
 --- smart_proxy.gemspec~	2020-04-02 08:05:06.000000000 +0000
 +++ smart_proxy.gemspec	2020-06-15 10:54:53.896000000 +0000
-@@ -16,6 +16,29 @@ Gem::Specification.new do |s|
+@@ -16,6 +16,30 @@ Gem::Specification.new do |s|
    s.add_dependency 'logging'
    s.add_dependency 'rack', '>= 1.3'
    s.add_dependency 'sinatra'
++  s.add_dependency 'facter'
 +  s.add_dependency 'rake', '~> 13.0'
 +  s.add_dependency 'concurrent-ruby', '~> 1.1'
 +  s.add_dependency 'ffi', '~> 1.12'
