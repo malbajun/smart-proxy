@@ -1,0 +1,17 @@
+object 3e3a5343d82ecbddca93f76678c6a1e853b57db8
+type commit
+tag 3.0.0
+tagger Amit Upadhye <upadhyeammit@gmail.com> 1631043481 +0530
+
+Release 3.0.0
+-----BEGIN PGP SIGNATURE-----
+
+iQFLBAABCAA1FiEED/BQUgDPrHTaKHGZBNTBTnWkSuEFAmE3v5kXHHVwYWRoeWVh
+bW1pdEBnbWFpbC5jb20ACgkQBNTBTnWkSuGjQAf+J9UIrefGERqaUte4NOLYy76I
+dsKE8K9HJD5X+3p5G9gMefBAp+VM9+LrgCWjeFFATrUfvnJ1g4G78TnemfxR62HB
+gRd6MJqKv6hJZs6NLWYtWiMyzSITqEsRs7COsTokiuDaF20e2JRldBXljZaOlvrX
++4Qeygfdih2o5Cyc6fnuXh/bpMrgqq4f7urjXVQl+AvRlzTUlF5iE5Wiq2nghbNF
+kMmFhGrK2K0N4UQfTRb3+r5fqH0/tr6GkRXy+5F5STtQbkOmsOlFpbYrwCflwyrS
+BwjouOEh6xeTgum9eTMhQYVo/jQVo4nzwenIRanmLSYQUF4ffigt9AEJZNVO+w==
+=sBnU
+-----END PGP SIGNATURE-----

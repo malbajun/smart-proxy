@@ -1,0 +1,26 @@
+--- Gemfile~	2021-09-07 19:38:01.000000000 +0000
++++ Gemfile	2021-11-03 11:58:34.517000000 +0000
+@@ -7,3 +7,14 @@ gem 'concurrent-ruby', '~> 1.0', require
+ Dir[File.join(__dir__, 'bundler.d', '*.rb')].each do |bundle|
+   instance_eval(Bundler.read_file(bundle))
+ end
++
++gem 'facter', '~> 4.0'
++gem 'smart_proxy_salt', '~> 2'
++gem 'smart_proxy_dynflow', '~> 0.5'
++gem 'smart_proxy_remote_execution_ssh', '~> 0.4.1'
++gem 'smart_proxy_ansible', '~> 3.0.1'
++gem 'smart_proxy_discovery', '~> 1.0.5'
++gem 'smart_proxy_pulp', '~> 2.1.0'
++gem 'smart_proxy_chef', '~> 0.2.0'
++gem 'ed25519'
++gem 'bcrypt_pbkdf'
+--- bundler.d/test.rb~	2021-11-03 15:00:50.463000000 +0000
++++ bundler.d/test.rb	2021-11-03 15:00:57.320000000 +0000
+@@ -15,5 +15,5 @@ group :test do
+
+   # Technically this is a hard dependency of the facts module but that's only
+   # used in discovery. This at least allows us to run the tests on it
+-  gem 'facter', :require => false
++  # gem 'facter', :require => false
+ end
