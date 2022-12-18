@@ -1,7 +1,7 @@
 %define        gemname smart_proxy
 
 Name:          gem-smart-proxy
-Version:       3.4.0
+Version:       3.5.1
 Release:       alt1
 Summary:       RESTful proxies for DNS, DHCP, TFTP, BMC and Puppet
 License:       GPL-3.0
@@ -11,30 +11,64 @@ Vcs:           https://github.com/theforeman/smart-proxy.git
 Packager:      Ruby Maintainers Team <ruby@packages.altlinux.org>
 BuildArch:     noarch
 
-Source4:       puppetca_http_api.yml
-Source3:       smart-proxy.conf
-Source2:       smart-proxy.service
-Source1:       settings.yml
 Source:        %name-%version.tar
-Patch2:        config-path.patch
-Patch1:        config.patch
+Source1:       settings.yml
+Source2:       smart-proxy.service
+Source3:       smart-proxy.conf
+Source4:       puppetca_http_api.yml
 Patch:         deps.patch
+Patch1:        config.patch
+Patch2:        config-path.patch
 BuildRequires(pre): rpm-build-ruby
+%if_with check
+BuildRequires: gem(concurrent-ruby) >= 1.0 gem(concurrent-ruby) < 2
+BuildRequires: gem(rubyipmi) >= 0.10.0
+BuildRequires: gem(redfish_client) >= 0.5.1
+BuildRequires: gem(pry) >= 0
+BuildRequires: gem(rdoc) >= 0
+BuildRequires: gem(rsec) >= 1.0.0
+BuildRequires: gem(rb-inotify) >= 0
+BuildRequires: gem(rb-kqueue) >= 0
+BuildRequires: gem(logging-journald) >= 2.0 gem(logging-journald) < 3
+BuildRequires: gem(rkerberos) >= 0.1.1
+BuildRequires: gem(gssapi) >= 0
+BuildRequires: gem(ruby-libvirt) >= 0.6.0
+BuildRequires: gem(jwt) >= 0
+BuildRequires: gem(xmlrpc) >= 0.2 gem(xmlrpc) < 1
+BuildRequires: gem(mocha) >= 1.10 gem(mocha) < 2
+BuildRequires: gem(ci_reporter) >= 1.6.3 gem(ci_reporter) < 3
+BuildRequires: gem(test-unit) >= 0
+BuildRequires: gem(benchmark-ips) >= 0
+BuildRequires: gem(ruby-prof) < 1.4
+BuildRequires: gem(rubocop) >= 0.89.0 gem(rubocop) < 2
+BuildRequires: gem(rubocop-performance) >= 1.5.2 gem(rubocop-performance) < 2
+BuildRequires: gem(rack-test) >= 0
+BuildRequires: gem(rake) >= 0
+BuildRequires: gem(rubocop-checkstyle_formatter) >= 0.2 gem(rubocop-checkstyle_formatter) < 1
+BuildRequires: gem(webmock) >= 0
+BuildRequires: gem(facter) >= 0
 BuildRequires: gem(json) >= 0
 BuildRequires: gem(logging) >= 0
 BuildRequires: gem(rack) >= 1.3
 BuildRequires: gem(sd_notify) >= 0.1 gem(sd_notify) < 1
-BuildRequires: gem(sinatra) >= 0
+BuildRequires: gem(sinatra) >= 2.0 gem(sinatra) < 3
+BuildRequires: gem(webrick) >= 1.0 gem(webrick) < 2
+%endif
 
 %add_findreq_skiplist %ruby_gemslibdir/**/*
 %add_findprov_skiplist %ruby_gemslibdir/**/*
+%ruby_use_gem_dependency rubocop >= 1.15.0,rubocop < 2
+%ruby_use_gem_dependency rubocop-performance >= 1.11.3,rubocop-performance < 2
+%ruby_use_gem_dependency rsec >= 1.0.0,rsec < 2
+%ruby_use_gem_dependency ci_reporter >= 2.0.0,ci_reporter < 3
 %ruby_alias_names smart_proxy,smart-proxy
 Requires:      gem(json) >= 0
 Requires:      gem(logging) >= 0
 Requires:      gem(rack) >= 1.3
 Requires:      gem(sd_notify) >= 0.1 gem(sd_notify) < 1
-Requires:      gem(sinatra) >= 0
-Provides:      gem(smart_proxy) = 3.4.0
+Requires:      gem(sinatra) >= 2.0 gem(sinatra) < 3
+Requires:      gem(webrick) >= 1.0 gem(webrick) < 2
+Provides:      gem(smart_proxy) = 3.5.1
 Conflicts:     gem-smart-proxy-compat
 
 
@@ -61,14 +95,37 @@ booting
 
 
 %package       -n smart-proxy
-Version:       3.4.0
+Version:       3.5.1
 Release:       alt1
 Summary:       RESTful proxies for DNS, DHCP, TFTP, BMC and Puppet executable(s)
 Summary(ru_RU.UTF-8): Исполнямка для самоцвета smart_proxy
 Group:         Development/Ruby
 BuildArch:     noarch
 
-Requires:      gem(smart_proxy) = 3.4.0
+Requires:      gem(smart_proxy) = 3.5.1
+Requires:      gem(redfish_client) >= 0.5.1
+Requires:      gem(psych) = 4.0.3
+Requires:      gem(rubyipmi) >= 0.10.0
+Requires:      gem(pry) >= 0
+Requires:      gem(rdoc) >= 0
+Requires:      gem(rsec) >= 0
+Requires:      gem(rb-inotify) >= 0
+Requires:      gem(rb-kqueue) >= 0
+Requires:      gem(logging-journald) >= 2.0
+Requires:      gem(rkerberos) >= 0.1.1
+Requires:      gem(gssapi) >= 0
+Requires:      gem(ruby-libvirt) >= 0.6.0
+Requires:      gem(jwt) >= 0
+Requires:      gem(xmlrpc) >= 0.2
+Requires:      gem(smart_proxy_salt) >= 2.0
+Requires:      gem(smart_proxy_dynflow) >= 0.5
+Requires:      gem(smart_proxy_remote_execution_ssh) >= 0.4.1
+Requires:      gem(smart_proxy_ansible) >= 3.0.1
+Requires:      gem(smart_proxy_discovery) >= 1.0.5
+Requires:      gem(smart_proxy_pulp) >= 2.1.0
+Requires:      gem(smart_proxy_chef) >= 0.2.0
+Requires:      gem(ed25519) >= 0
+Requires:      gem(bcrypt_pbkdf) >= 0
 Conflicts:     smart-proxy-compat
 
 %description   -n smart-proxy
@@ -99,14 +156,14 @@ booting
 
 
 %package       -n gem-smart-proxy-doc
-Version:       3.4.0
+Version:       3.5.1
 Release:       alt1
 Summary:       RESTful proxies for DNS, DHCP, TFTP, BMC and Puppet documentation files
 Summary(ru_RU.UTF-8): Файлы сведений для самоцвета smart_proxy
 Group:         Development/Documentation
 BuildArch:     noarch
 
-Requires:      gem(smart_proxy) = 3.4.0
+Requires:      gem(smart_proxy) = 3.5.1
 Conflicts:     gem-smart-proxy-compat-doc
 
 %description   -n gem-smart-proxy-doc
@@ -137,14 +194,40 @@ booting
 
 
 %package       -n gem-smart-proxy-devel
-Version:       3.4.0
+Version:       3.5.1
 Release:       alt1
 Summary:       RESTful proxies for DNS, DHCP, TFTP, BMC and Puppet development package
 Summary(ru_RU.UTF-8): Файлы для разработки самоцвета smart_proxy
 Group:         Development/Ruby
 BuildArch:     noarch
 
-Requires:      gem(smart_proxy) = 3.4.0
+Requires:      gem(smart_proxy) = 3.5.1
+Requires:      gem(concurrent-ruby) >= 1.0 gem(concurrent-ruby) < 2
+Requires:      gem(rubyipmi) >= 0.10.0
+Requires:      gem(redfish_client) >= 0.5.1
+Requires:      gem(pry) >= 0
+Requires:      gem(rdoc) >= 0
+Requires:      gem(rsec) >= 1.0.0
+Requires:      gem(rb-inotify) >= 0
+Requires:      gem(rb-kqueue) >= 0
+Requires:      gem(logging-journald) >= 2.0 gem(logging-journald) < 3
+Requires:      gem(rkerberos) >= 0.1.1
+Requires:      gem(gssapi) >= 0
+Requires:      gem(ruby-libvirt) >= 0.6.0
+Requires:      gem(jwt) >= 0
+Requires:      gem(xmlrpc) >= 0.2 gem(xmlrpc) < 1
+Requires:      gem(mocha) >= 1.10 gem(mocha) < 2
+Requires:      gem(ci_reporter) >= 1.6.3 gem(ci_reporter) < 3
+Requires:      gem(test-unit) >= 0
+Requires:      gem(benchmark-ips) >= 0
+Requires:      gem(ruby-prof) < 1.4
+Requires:      gem(rubocop) >= 0.89.0 gem(rubocop) < 2
+Requires:      gem(rubocop-performance) >= 1.5.2 gem(rubocop-performance) < 2
+Requires:      gem(rack-test) >= 0
+Requires:      gem(rake) >= 0
+Requires:      gem(rubocop-checkstyle_formatter) >= 0.2 gem(rubocop-checkstyle_formatter) < 1
+Requires:      gem(webmock) >= 0
+Requires:      gem(facter) >= 0
 
 %description   -n gem-smart-proxy-devel
 RESTful proxies for DNS, DHCP, TFTP, BMC and Puppet development package.
@@ -236,6 +319,10 @@ rm -rf %_localstatedir/smart-proxy/Gemfile.lock
 
 
 %changelog
+* Mon Dec 19 2022 Pavel Skrylev <majioa@altlinux.org> 3.5.1-alt1
+- ^ 3.4.0 -> 3.5.1
+- ! fixed default smart-proxy.service file
+
 * Fri Sep 16 2022 Pavel Skrylev <majioa@altlinux.org> 3.4.0-alt1
 - ^ 3.0.0 -> 3.4.0
 

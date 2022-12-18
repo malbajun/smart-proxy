@@ -9,6 +9,7 @@ Type=forking
 User=_smartforeman
 NotifyAccess=all
 PIDFile=/run/smart-proxy/smart-proxy.pid
+Environment=BUNDLE_GEMFILE=/var/lib/smart-proxy/Gemfile
 WorkingDirectory=/var/lib/smart-proxy
 ExecStart=/bin/bash -lc 'exec bundle exec /usr/bin/smart-proxy'
 ExecReload=/bin/kill -HUP $MAINPID
