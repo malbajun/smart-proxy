@@ -5,17 +5,11 @@ After=network.target remote-fs.target nss-lookup.target puppet.service puppetser
 Wants=puppet.service puppetserver.service
 
 [Service]
-Type=forking
+Type=exec
 User=_smartforeman
-NotifyAccess=all
-PIDFile=/run/smart-proxy/smart-proxy.pid
 Environment=BUNDLE_GEMFILE=/var/lib/smart-proxy/Gemfile
 WorkingDirectory=/var/lib/smart-proxy
 ExecStart=/bin/bash -lc 'exec bundle exec /usr/bin/smart-proxy'
-ExecReload=/bin/kill -HUP $MAINPID
-KillMode=process
-LimitCORE=infinity
-Restart=on-failure
 StandardInput=null
 StandardOutput=syslog
 StandardError=syslog
