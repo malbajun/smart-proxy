@@ -9,7 +9,7 @@ Type=exec
 User=_smartforeman
 Environment=BUNDLE_GEMFILE=/var/lib/smart-proxy/Gemfile
 WorkingDirectory=/var/lib/smart-proxy
-ExecStart=/bin/bash -lc 'exec railsctl run smart-proxy bundle exec /usr/bin/smart-proxy'
+ExecStart=/bin/bash -lc 'exec /usr/sbin/railsctl run smart-proxy bundle exec /usr/bin/smart-proxy'
 StandardInput=null
 StandardOutput=journal
 StandardError=journal
