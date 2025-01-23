@@ -1,5 +1,6 @@
 tar: @version@:.
-copy?: *.service
-copy?: *.patch
-copy?: *.yml
-copy?: *.conf
+spec: .gear/gem-smart-proxy.spec
+copy?: .gear/*.service
+copy?: .gear/*.patch
+copy?: .gear/*.yml
+copy?: .gear/*.conf
