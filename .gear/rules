@@ -1,0 +1,8 @@
+tar: @version@:.
+spec: .gear/gem-smart-proxy.spec
+copy?: .gear/*.service
+copy?: .gear/*.patch
+copy?: .gear/*.yml
+copy?: .gear/*.conf
+copy?: .gear/Gemfile
+diff: @version@:. . exclude=.gear/

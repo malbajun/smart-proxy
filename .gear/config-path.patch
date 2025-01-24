@@ -1,0 +1,46 @@
+--- a/Rakefile~	2021-09-07 19:38:01.000000000 +0000
++++ b/Rakefile	2021-10-20 14:29:30.073000000 +0000
+@@ -34,10 +34,11 @@ end
+ desc 'Migrate configuration settings.'
+ task :migrate_settings do
+   app_dir = __dir__
+-  config_src_path = File.join(app_dir, "config", "settings.yml")
+-  modules_config_src_path = File.join(app_dir, "config", "settings.d")
++  config_dir = File.directory?('/etc/smart-proxy') && '/etc/smart-proxy' || app_dir
++  config_src_path = File.join(config_dir, "config", "settings.yml")
++  modules_config_src_path = File.join(config_dir, "config", "settings.d")
+   migrations_dir_path = File.join(app_dir, "extra", "migrations")
+-  migrations_state_file_path = File.join(app_dir, "config", "migration_state")
++  migrations_state_file_path = File.join(config_dir, "config", "migration_state")
+   FileUtils.touch(migrations_state_file_path)
+ 
+   Dir.mktmpdir do |working_dir|
+[builder@localhost gem-smart-proxy-3.0.0]$ diff -NBPrup lib/proxy/settings.rb~ lib/proxy/settings.rb
+--- a/lib/proxy/settings.rb~	2021-09-07 19:38:01.000000000 +0000
++++ b/lib/proxy/settings.rb	2021-10-20 14:28:10.019000000 +0000
+@@ -5,7 +5,9 @@ require "pathname"
+ module Proxy::Settings
+   extend ::Proxy::Log
+ 
+-  SETTINGS_PATH = Pathname.new(__dir__).join("..", "..", "config", "settings.yml")
++  SYSCONFFILE = Pathname.new('/').join('etc', 'smart-proxy', 'config', 'settings.yml')
++  LOCALCONFFILE = Pathname.new(__dir__).join("..", "..", "config", "settings.yml")
++  SETTINGS_PATH = Pathname.new(File.expand_path((File.file?(SYSCONFFILE) && SYSCONFFILE || LOCALCONFFILE)))
+ 
+   def self.initialize_global_settings(settings_path = nil, argv = ARGV)
+     global = ::Proxy::Settings::Global.new(YAML.load(File.read(settings_path || SETTINGS_PATH)))
+[builder@localhost gem-smart-proxy-3.0.0]$ diff -NBPrup lib/proxy/settings/global.rb~ lib/proxy/settings/global.rb
+--- a/lib/proxy/settings/global.rb~	2021-09-07 19:38:01.000000000 +0000
++++ b/lib/proxy/settings/global.rb	2021-10-20 14:27:35.530000000 +0000
+@@ -1,9 +1,9 @@
+ module ::Proxy::Settings
+   class Global < ::OpenStruct
+     DEFAULT_SETTINGS = {
+-      :settings_directory => Pathname.new(__dir__).join("..", "..", "..", "config", "settings.d").expand_path.to_s,
++      :settings_directory => File.join(File.dirname(::Proxy::Settings::SETTINGS_PATH), "settings.d"),
+       :https_port => 8443,
+-      :log_file => "/var/log/foreman-proxy/proxy.log",
++      :log_file => "/var/log/smart-proxy/proxy.log",
+       :file_rolling_keep => 6,
+       :file_rolling_size => 0,
+       :file_rolling_age => 'weekly',
