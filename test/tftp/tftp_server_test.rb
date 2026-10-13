@@ -5,7 +5,7 @@ require 'tempfile'
 
 module TftpGenericServerSuite
   def setup
-    @rootdir = "/some/root"
+    @rootdir = Dir.mktmpdir
     @mac = "aa:bb:cc:dd:ee:ff"
     @content = "file content"
     Proxy::TFTP::Plugin.settings.stubs(:tftproot).returns(@rootdir)
@@ -100,15 +100,10 @@ class TftpSyslinuxServerTest < Test::Unit::TestCase
     @pxe_config_files = ["pxelinux.cfg/01-aa-bb-cc-dd-ee-ff"]
     @pxe_default_files = ["pxelinux.cfg/default"]
   end
-end
 
-class TftpPxegrubServerTest < Test::Unit::TestCase
-  include TftpGenericServerSuite
-
-  def setup_paths
-    @subject = Proxy::TFTP::Pxegrub.new
-    @pxe_config_files = ["grub/menu.lst.01AABBCCDDEEFF", "grub/01-AA-BB-CC-DD-EE-FF"]
-    @pxe_default_files = ["grub/menu.lst", "grub/efidefault"]
+  def test_symlinks_in_host_config_dir
+    @subject.set(@mac, @content)
+    assert_equal @content, File.read(File.join(@subject.path, 'host-config', @subject.dashed_mac(@mac).downcase, 'pxe', '01-aa-bb-cc-dd-ee-ff'))
   end
 end
 
@@ -126,9 +121,6 @@ class TftpPxegrub2ServerTest < Test::Unit::TestCase
   def setup_paths
     @subject = Proxy::TFTP::Pxegrub2.new
     @pxe_config_files = [
-      "host-config/aa-bb-cc-dd-ee-ff/grub2/grub.cfg",
-      "host-config/aa-bb-cc-dd-ee-ff/grub2/grub.cfg-01-aa-bb-cc-dd-ee-ff",
-      "host-config/aa-bb-cc-dd-ee-ff/grub2/grub.cfg-aa:bb:cc:dd:ee:ff",
       "grub2/grub.cfg-01-aa-bb-cc-dd-ee-ff",
       "grub2/grub.cfg-aa:bb:cc:dd:ee:ff",
     ]
@@ -137,7 +129,7 @@ class TftpPxegrub2ServerTest < Test::Unit::TestCase
 
   def test_pxeconfig_dir
     assert_equal File.join(@subject.path, "host-config", @subject.dashed_mac(@mac).downcase, "grub2"), @subject.pxeconfig_dir(@mac)
-    assert_equal File.join(@subject.path, "grub2"), @subject.pxeconfig_dir()
+    assert_equal File.join(@subject.path, "grub2"), @subject.pxeconfig_dir
   end
 
   def test_release_specific_bootloader_path
@@ -199,6 +191,13 @@ class TftpPxegrub2ServerTest < Test::Unit::TestCase
     @subject.expects(:delete_host_dir).with(@mac).once
     @subject.del @mac
   end
+
+  def test_symlinks_in_host_config_dir
+    @subject.set(@mac, @content)
+    ['grub.cfg-01-aa-bb-cc-dd-ee-ff', 'grub.cfg-aa:bb:cc:dd:ee:ff'].each do |file|
+      assert_equal @content, File.read(File.join(@subject.path, 'host-config', @subject.dashed_mac(@mac).downcase, 'grub2', file))
+    end
+  end
 end
 
 class TftpPoapServerTest < Test::Unit::TestCase
@@ -234,5 +233,10 @@ class TftpIpxeServerTest < Test::Unit::TestCase
     @subject = Proxy::TFTP::Ipxe.new
     @pxe_config_files = ["pxelinux.cfg/01-aa-bb-cc-dd-ee-ff.ipxe"]
     @pxe_default_files = ["pxelinux.cfg/default.ipxe"]
+  end
+
+  def test_symlinks_in_host_config_dir
+    @subject.set(@mac, @content)
+    assert_equal @content, File.read(File.join(@subject.path, 'host-config', @subject.dashed_mac(@mac).downcase, 'ipxe', '01-aa-bb-cc-dd-ee-ff.ipxe'))
   end
 end

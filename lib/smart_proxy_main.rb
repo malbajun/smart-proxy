@@ -25,6 +25,7 @@ require 'proxy/provider'
 require 'proxy/error'
 require 'proxy/request'
 require 'proxy/request_id_middleware'
+require 'proxy/hsts_middleware'
 
 require 'bundler_helper'
 Proxy::BundlerHelper.require_groups(:default)
@@ -44,7 +45,20 @@ module Proxy
   ::Sinatra::Base.set :logging, false
   ::Sinatra::Base.use ::Proxy::RequestIdMiddleware
   ::Sinatra::Base.use ::Proxy::LoggerMiddleware
-  ::Sinatra::Base.set :env, :production
+  ::Sinatra::Base.use ::Proxy::HstsMiddleware
+  # Without this, Sinatra defaults to :development, which in Sinatra 4
+  # enables strict Rack::Protection::HostAuthorization that rejects
+  # requests whose Host header isn't localhost — breaking all real
+  # deployments where Foreman reaches smart-proxy by hostname.
+  ::Sinatra::Base.set :environment, :production
+  # Sinatra 2 ignores this setting; without configured hosts, Sinatra 4
+  # accepts all hostnames as it did before.
+  # Sinatra passes this hash to Rack::Protection::HostAuthorization, which runs
+  # before LoggerMiddleware. Use the proxy logger for rejected-host diagnostics.
+  ::Sinatra::Base.set :host_authorization, {
+    permitted_hosts: SETTINGS.permitted_hosts || [],
+    logger: ::Proxy::LogBuffer::Decorator.instance,
+  }
   ::Sinatra::Base.register ::Sinatra::Authorization
 
   require 'root/root'

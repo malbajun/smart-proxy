@@ -8,7 +8,7 @@ module Proxy::TFTP
     helpers ::Proxy::Helpers
     authorize_with_trusted_hosts
     authorize_with_ssl_client
-    VARIANTS = ["Syslinux", "Pxelinux", "Pxegrub", "Pxegrub2", "Ztp", "Poap", "Ipxe"].freeze
+    VARIANTS = ["Syslinux", "Pxelinux", "Pxegrub2", "Ztp", "Poap", "Ipxe"].freeze
 
     helpers do
       def instantiate(variant, mac = nil)
@@ -21,7 +21,7 @@ module Proxy::TFTP
       def create(variant, mac, os: nil, release: nil, arch: nil, bootfile_suffix: nil)
         tftp = instantiate variant, mac
         log_halt(400, "TFTP: Failed to setup host specific bootloader directory: ") { tftp.setup_bootloader(mac: mac, os: os, release: release, arch: arch, bootfile_suffix: bootfile_suffix) }
-        log_halt(400, "TFTP: Failed to create pxe config file: ") { tftp.set(mac, (params[:pxeconfig] || params[:syslinux_config])) }
+        log_halt(400, "TFTP: Failed to create pxe config file: ") { tftp.set(mac, params[:pxeconfig] || params[:syslinux_config]) }
       end
 
       def delete(variant, mac)
@@ -70,7 +70,7 @@ module Proxy::TFTP
 
     # Get the value for next_server
     get "/serverName" do
-      {"serverName" => (Proxy::TFTP::Plugin.settings.tftp_servername || "")}.to_json
+      {"serverName" => Proxy::TFTP::Plugin.settings.tftp_servername || ""}.to_json
     end
   end
 end

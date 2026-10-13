@@ -55,15 +55,19 @@ module Proxy
       end
 
       def identifystatus
+        location_active = system.LocationIndicatorActive
+        return location_active ? 'on' : 'off' unless location_active.nil?
+
+        logger.debug('LocationIndicatorActive is nil, falling back to IndicatorLED for identify status')
         system.IndicatorLED&.downcase
       end
 
       def identifyon
-        system.patch(payload: { 'IndicatorLED' => 'On' })
+        patch_identify(:on)
       end
 
       def identifyoff
-        system.patch(payload: { 'IndicatorLED' => 'Off' })
+        patch_identify(:off)
       end
 
       def poweroff(soft = false)
@@ -71,7 +75,15 @@ module Proxy
       end
 
       def powercycle
+        poweraction('PowerCycle')
+      end
+
+      def powerreset
         poweraction('ForceRestart')
+      end
+
+      def powerreboot
+        poweraction('GracefulRestart')
       end
 
       def poweron
@@ -123,13 +135,12 @@ module Proxy
                    'disk'  => 'Hdd',
                    'pxe'   => 'Pxe' }
 
-        system.patch(
-          payload: {
-            'Boot' => {
-              'BootSourceOverrideTarget' => devmap[args[:device]],
-              'BootSourceOverrideEnabled' => args[:persistent] ? 'Enabled' : 'Once',
-            },
-          })
+        system.patch_if_match({
+                                'Boot' => {
+                                  'BootSourceOverrideTarget' => devmap[args[:device]],
+                                  'BootSourceOverrideEnabled' => args[:persistent] ? 'Enabled' : 'Once',
+                                },
+                              })
         powercycle if args[:reboot]
       end
 
@@ -209,6 +220,31 @@ module Proxy
 
       def poweraction(action)
         host.post(path: system.Actions&.[]('#ComputerSystem.Reset')&.[]('target'), payload: { 'ResetType' => action })
+      end
+
+      def patch_identify(state)
+        location_active = system.LocationIndicatorActive
+
+        payload = case state
+                  when :on
+                    if location_active.nil?
+                      logger.debug('LocationIndicatorActive is nil, falling back to IndicatorLED for identify on')
+                      { 'IndicatorLED' => 'Lit' }
+                    else
+                      { 'LocationIndicatorActive' => true }
+                    end
+                  when :off
+                    if location_active.nil?
+                      logger.debug('LocationIndicatorActive is nil, falling back to IndicatorLED for identify off')
+                      { 'IndicatorLED' => 'Off' }
+                    else
+                      { 'LocationIndicatorActive' => false }
+                    end
+                  else
+                    raise ArgumentError, "Unsupported identify state: #{state.inspect}"
+                  end
+
+        system.patch_if_match(payload)
       end
 
       # I haven't yet encountered a system (apart from a blade chassis, which I think

@@ -46,6 +46,14 @@ module Proxy
         raise NotImplementedError.new
       end
 
+      def powerreset
+        raise NotImplementedError.new
+      end
+
+      def powerreboot
+        raise NotImplementedError.new
+      end
+
       def bootdevice
         raise NotImplementedError.new
       end

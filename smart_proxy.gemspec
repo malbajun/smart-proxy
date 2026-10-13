@@ -12,13 +12,16 @@ Gem::Specification.new do |s|
   s.test_files = Dir.glob("{test}/**/*test.rb")
   s.license = 'GPL-3.0'
   s.extra_rdoc_files = ["README.md"]
-  s.required_ruby_version = '>= 2.7'
+  s.required_ruby_version = '>= 3.0'
+  s.add_dependency 'base64'
   s.add_dependency 'json'
   s.add_dependency 'logging'
-  s.add_dependency 'rack', '>= 3.0'
-  s.add_dependency 'rackup', '>= 2.0'
+  s.add_dependency 'ostruct'
+  s.add_dependency 'rack', '>= 2.0', '< 4'
+  s.add_dependency 'rackup'
+  s.add_dependency 'rexml', '~> 3.2'
   s.add_dependency 'sd_notify', '~> 0.1'
-  s.add_dependency 'sinatra', '~> 2.0'
+  s.add_dependency 'sinatra', '>= 2.0', '< 5'
   s.add_dependency 'webrick', '~> 1.0'
   s.description = <<~EOF
     Foreman Proxy is used via The Foreman Project, it allows Foreman to manage
