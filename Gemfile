@@ -2,6 +2,8 @@ source 'https://rubygems.org'
 
 gemspec
 
+gem 'smart_proxy_discovery_image', '>= 1.6.0'
+
 gem 'concurrent-ruby', '~> 1.0', require: 'concurrent'
 
 Dir[File.join(__dir__, 'bundler.d', '*.rb')].each do |bundle|

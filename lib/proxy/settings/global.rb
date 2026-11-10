@@ -1,9 +1,9 @@
 module ::Proxy::Settings
   class Global < ::OpenStruct
     DEFAULT_SETTINGS = {
-      :settings_directory => Pathname.new(__dir__).join("..", "..", "..", "config", "settings.d").expand_path.to_s,
+      :settings_directory => SETTINGS_PATH.dirname.join('settings.d').expand_path.to_s,
       :https_port => 8443,
-      :log_file => "/var/log/foreman-proxy/proxy.log",
+      :log_file => "/var/log/smart-proxy/proxy.log",
       :file_rolling_keep => 6,
       :file_rolling_size => 0,
       :file_rolling_age => 'weekly',
