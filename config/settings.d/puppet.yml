@@ -1,0 +1,12 @@
+---
+# Can be true, false, or http/https to enable just one of the protocols
+:enabled: http
+
+# valid providers:
+#   puppet_proxy_mcollective (uses mco puppet)
+#   puppet_proxy_ssh         (run puppet over ssh)
+#   puppet_proxy_salt        (uses salt puppet.run)
+#   puppet_proxy_customrun   (calls a custom command with args)
+#:use_provider: puppet_proxy_customrun
+
+:puppet_version: 6.17.0

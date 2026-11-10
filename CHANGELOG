@@ -1,44 +1,23 @@
 2026-10-02	Odilon Sousa <osousa@redhat.com>
-	* Release 5.0.1
+	* Release 3.19.2
 
-2026-09-08	Ondřej Gajdušek <ogajduse@redhat.com>
-	* Release 5.0.0
+2026-07-01	Odilon Sousa <osousa@redhat.com>
+	* Release 3.19.1
 
-2026-09-07	Lukas Hellebrandt <lhellebr@redhat.com>
-	* Fixes #38120 - Support both Sinatra 2/Rack 2 and Sinatra 4/Rack 3
+2026-06-09	Ondřej Gajdušek <ogajduse@redhat.com>
+	* Release 3.19.0
 
-2026-08-25	Ondřej Gajdušek <ogajduse@redhat.com>
-	* Release 5.0.0-rc2
+2026-06-01	Evgeni Golov <evgeni@golov.de>
+	* Fixes #39320 - Expose bmc_default_provider setting via v2/features API (#946)
 
-2026-08-12	Ondřej Gajdušek <ogajduse@redhat.com>
-	* Release 5.0.0-rc1
+2026-05-26	Ondřej Gajdušek <ogajduse@redhat.com>
+	* Release 3.19.0-rc2
 
-2026-07-30	Pablo Méndez Hernández <pablomh@gmail.com>
-	* Fixes #39208 - Cache global registration script in smart-proxy (#935)
-
-2026-07-14	Ondřej Gajdušek <ogajduse@redhat.com>
-	* Refs #39518 - Pin tls_ciphers to OpenSSL defaults in HTTPS integration tests
-
-2026-07-13	Yusuke Hirota <hirota.yusuke@fujitsu.com>
-	* Fixes #39301 - Add LocationIndicatorActive support with IndicatorLED fallback
-
-2026-07-10	Yusuke Hirota <hirota.yusuke@fujitsu.com>
-	* Fixes #39300 - Fix Redfish identify LED handling: use 'Lit' and patch_if_match
-
-2026-07-09	Adam Lazík <alazik@redhat.com>
-	* Fixes #39405 - Add tls_min_version and tls_ciphers settings
-
-2026-05-20	Ondřej Gajdušek <ogajduse@redhat.com>
-	* Bump develop to 5.0.0-develop
-
-2026-05-18	Arvind Jangir <ajangir@redhat.com>
-	* Fixes #39320 - Expose bmc_default_provider setting via v2/features API
+2026-05-13	Ondřej Gajdušek <ogajduse@redhat.com>
+	* Release 3.19.0-rc1
 
 2026-05-13	Nadja Heitmann <nadjah@atix.de>
 	* Fixes #39315 - Change rake task 'verbose' parameter
-
-2026-05-12	Ondřej Gajdušek <ogajduse@redhat.com>
-	* Bump develop to 3.20.0-develop
 
 2026-03-09	Yusuke Hirota <hirota.yusuke@fujitsu.com>
 	* Fixes #38914 - Use ETag-aware patch_if_match for Redfish operations

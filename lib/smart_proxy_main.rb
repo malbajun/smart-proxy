@@ -46,11 +46,7 @@ module Proxy
   ::Sinatra::Base.use ::Proxy::RequestIdMiddleware
   ::Sinatra::Base.use ::Proxy::LoggerMiddleware
   ::Sinatra::Base.use ::Proxy::HstsMiddleware
-  # Without this, Sinatra defaults to :development, which in Sinatra 4
-  # enables strict Rack::Protection::HostAuthorization that rejects
-  # requests whose Host header isn't localhost — breaking all real
-  # deployments where Foreman reaches smart-proxy by hostname.
-  ::Sinatra::Base.set :environment, :production
+  ::Sinatra::Base.set :env, :production
   ::Sinatra::Base.register ::Sinatra::Authorization
 
   require 'root/root'

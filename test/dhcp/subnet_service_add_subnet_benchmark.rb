@@ -1,5 +1,4 @@
 require 'benchmark_helper'
-require 'benchmark/ips'
 
 require 'dhcp_common/dhcp_common'
 require 'dhcp_common/subnet'

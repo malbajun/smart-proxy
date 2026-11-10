@@ -1,7 +1,7 @@
 module ::Proxy::Settings
   class Global < ::OpenStruct
     DEFAULT_SETTINGS = {
-      :settings_directory => SETTINGS_PATH.dirname.join('settings.d').expand_path.to_s,
+      :settings_directory => File.join(File.dirname(::Proxy::Settings::SETTINGS_PATH), "settings.d"),
       :https_port => 8443,
       :log_file => "/var/log/smart-proxy/proxy.log",
       :file_rolling_keep => 6,
@@ -14,8 +14,8 @@ module ::Proxy::Settings
       :bind_host => ["*"],
       :log_buffer => 2000,
       :log_buffer_errors => 1000,
-      :tls_ciphers => nil,
-      :tls_min_version => nil,
+      :ssl_disabled_ciphers => [],
+      :tls_disabled_versions => [],
       :dns_resolv_timeouts => [5, 8, 13], # Ruby default is [5, 20, 40] which is a bit too much for us
     }
 

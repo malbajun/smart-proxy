@@ -7,16 +7,6 @@ module Proxy
         include Rsec::Helpers
         extend Rsec::Helpers
 
-        def seq_(*parsers, &block)
-          return super(*parsers) unless block
-
-          super(*parsers) do |*values|
-            # Rsec 1.0 passes the result array and context; older versions splat the results.
-            values = values.first if values.last.is_a?(Rsec::ParseContext)
-            block.call(*values)
-          end
-        end
-
         FAR_FUTURE = Time.at(0x7fffffff).utc # max time value on 32-bit systems
 
         class Base
@@ -383,7 +373,7 @@ module Proxy
           anything = /[^;,{}\s]+/.r
           seq_(keyword, SPACE.join(literal | anything).odd._?, LFT_BRACKET,
                SPACE.join(option | host | lazy { subnet } | lazy { group } | lazy { shared_network } | COMMENT | deleted | ignored_declaration | ignored_block).odd,
-               RGT_BRACKET) { |_, name, _, statements, _| GroupNode[name.flatten.first, statements] }.cached
+               RGT_BRACKET).cached { |_, name, _, statements, _| GroupNode[name.flatten.first, statements] }
         end
 
         def shared_network
@@ -392,7 +382,7 @@ module Proxy
           seq_(keyword,
                SPACE.join(literal | FQDN).odd, LFT_BRACKET,
                SPACE.join(include_file | option | host | lazy { subnet } | lazy { group } | pool | COMMENT | deleted | ignored_declaration | ignored_block).odd,
-               RGT_BRACKET) { |_, name, _, statements, _| GroupNode[name.first, statements] }.cached
+               RGT_BRACKET).cached { |_, name, _, statements, _| GroupNode[name.first, statements] }
         end
 
         def pool
@@ -409,9 +399,9 @@ module Proxy
           seq_(
             subnet_keyword, IPV4_ADDRESS, netmask_keyword, IPV4_ADDRESS,
             LFT_BRACKET, SPACE.join(range | option | host | lazy { group } | pool | COMMENT | ignored_declaration | ignored_block).odd,
-            RGT_BRACKET) do |_, subnet_address, _, subnet_mask, _, statements, _|
+            RGT_BRACKET).cached do |_, subnet_address, _, subnet_mask, _, statements, _|
             IpV4SubnetNode[subnet_address, subnet_mask, statements]
-          end.cached
+          end
         end
 
         def include_file

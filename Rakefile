@@ -39,10 +39,11 @@ end
 desc 'Migrate configuration settings.'
 task :migrate_settings do
   app_dir = __dir__
-  config_src_path = File.join(app_dir, "config", "settings.yml")
-  modules_config_src_path = File.join(app_dir, "config", "settings.d")
+  config_dir = File.directory?('/etc/smart-proxy') && '/etc/smart-proxy' || app_dir
+  config_src_path = File.join(config_dir, "config", "settings.yml")
+  modules_config_src_path = File.join(config_dir, "config", "settings.d")
   migrations_dir_path = File.join(app_dir, "extra", "migrations")
-  migrations_state_file_path = File.join(app_dir, "config", "migration_state")
+  migrations_state_file_path = File.join(config_dir, "config", "migration_state")
   FileUtils.touch(migrations_state_file_path)
 
   Dir.mktmpdir do |working_dir|

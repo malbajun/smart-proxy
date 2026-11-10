@@ -1,4 +1,5 @@
 require 'test_helper'
+require 'benchmark/ips'
 
 def proxy_benchmark
   GC.start

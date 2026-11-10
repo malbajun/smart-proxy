@@ -17,11 +17,10 @@ Gem::Specification.new do |s|
   s.add_dependency 'json'
   s.add_dependency 'logging'
   s.add_dependency 'ostruct'
-  s.add_dependency 'rack', '>= 2.0', '< 4'
-  s.add_dependency 'rackup'
+  s.add_dependency 'rack', '>= 1.3'
   s.add_dependency 'rexml', '~> 3.2'
   s.add_dependency 'sd_notify', '~> 0.1'
-  s.add_dependency 'sinatra', '>= 2.0', '< 5'
+  s.add_dependency 'sinatra', '~> 2.0'
   s.add_dependency 'webrick', '~> 1.0'
   s.add_dependency 'smart_proxy_discovery_image', '>= 1.6.0'
   s.description = <<~EOF

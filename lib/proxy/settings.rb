@@ -5,9 +5,9 @@ require "pathname"
 module Proxy::Settings
   extend ::Proxy::Log
 
-  SYSTEM_SETTINGS_PATH = Pathname.new('/etc/smart-proxy/config/settings.yml')
-  LOCAL_SETTINGS_PATH = Pathname.new(__dir__).join("..", "..", "config", "settings.yml")
-  SETTINGS_PATH = SYSTEM_SETTINGS_PATH.file? ? SYSTEM_SETTINGS_PATH : LOCAL_SETTINGS_PATH
+  SYSCONFFILE = Pathname.new('/').join('etc', 'smart-proxy', 'config', 'settings.yml')
+  LOCALCONFFILE = Pathname.new(__dir__).join("..", "..", "config", "settings.yml")
+  SETTINGS_PATH = Pathname.new(File.expand_path((File.file?(SYSCONFFILE) && SYSCONFFILE || LOCALCONFFILE)))
 
   def self.initialize_global_settings(settings_path = nil, argv = ARGV)
     ::Proxy::Settings::Global.new(YAML.load(File.read(settings_path || SETTINGS_PATH)))
