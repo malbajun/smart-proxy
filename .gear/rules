@@ -1,6 +1,6 @@
-tar: .
+tar: 3.19.2-alt4:.
 spec: .gear/gem-smart-proxy.spec
-copy: .gear/settings.yml
-copy: .gear/smart-proxy.service
-copy: .gear/smart-proxy.conf
-copy: .gear/puppetca_http_api.yml
+copy: alt/settings.yml
+copy: alt/smart-proxy.service
+copy: alt/smart-proxy.conf
+copy: alt/puppetca_http_api.yml

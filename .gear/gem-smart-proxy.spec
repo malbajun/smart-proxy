@@ -1,14 +1,12 @@
+%define        _unpackaged_files_terminate_build 1
 %def_enable    check
 %def_enable    doc
 %def_enable    devel
-%if_enabled    devel
-%define        _unpackaged_files_terminate_build 1
-%endif
 %define        gemname smart_proxy
 
 Name:          gem-smart-proxy
 Version:       3.19.2
-Release:       alt3
+Release:       alt4
 Summary:       RESTful proxies for DNS, DHCP, TFTP, BMC and Puppet
 License:       GPL-3.0
 Group:         Development/Ruby
@@ -22,52 +20,77 @@ Source1:       settings.yml
 Source2:       smart-proxy.service
 Source3:       smart-proxy.conf
 Source4:       puppetca_http_api.yml
-BuildRequires(pre): rpm-macros-ruby rake setup-rb
+BuildRequires(pre): rpm-macros-ruby rake
+BuildRequires(pre): setup-rb >= 5.999.14.1
 %if_enabled check
-BuildRequires: gem(smart_proxy_discovery_image) >= 1.6.0
+BuildRequires: gem(base64) >= 0
 BuildRequires: gem(benchmark-ips) >= 0
-BuildRequires: gem(ci_reporter) >= 1.6.3
+BuildRequires: gem(ci_reporter) >= 2.0.0
 BuildRequires: gem(concurrent-ruby) >= 1.0
+BuildRequires: gem(dhcpsapi) >= 0.0.11
 BuildRequires: gem(facter) >= 0
+BuildRequires: gem(gssapi) >= 0
 BuildRequires: gem(json) >= 0
+BuildRequires: gem(jwt) >= 0
 BuildRequires: gem(logging) >= 0
-BuildRequires: gem(mocha) >= 1.10
+BuildRequires: gem(logging-journald) >= 2.0
+BuildRequires: gem(mocha) >= 2.7
+BuildRequires: gem(ostruct) >= 0
 BuildRequires: gem(pry) >= 0
-BuildRequires: gem(rack) >= 1.3
+BuildRequires: gem(rack) >= 2.0
 BuildRequires: gem(rack-test) >= 0
 BuildRequires: gem(rake) >= 0
+BuildRequires: gem(rb-inotify) >= 0
+BuildRequires: gem(rb-kqueue) >= 0
 BuildRequires: gem(rdoc) >= 0
+BuildRequires: gem(redfish_client) >= 0.8.0
+BuildRequires: gem(rexml) >= 3.2
+BuildRequires: gem(rkerberos) >= 0.1.1
+BuildRequires: gem(rsec) >= 1.0
 BuildRequires: gem(rubocop) >= 1.56.0
-BuildRequires: gem(rubocop-performance) >= 1.5.2
+BuildRequires: gem(rubocop-performance) >= 1.11.3
 BuildRequires: gem(rubocop-rake) >= 0
+BuildRequires: gem(ruby-libvirt) >= 0.6.0
 BuildRequires: gem(ruby-prof) >= 1.7
+BuildRequires: gem(rubyipmi) >= 0.12.1
 BuildRequires: gem(sd_notify) >= 0.1
 BuildRequires: gem(sinatra) >= 2.0
+BuildRequires: gem(smart_proxy_discovery_image) >= 1.6.0
 BuildRequires: gem(test-unit) >= 0
 BuildRequires: gem(webmock) >= 0
 BuildRequires: gem(webrick) >= 1.0
+BuildRequires: gem(xmlrpc) >= 0.2
+BuildConflicts: gem(ci_reporter) >= 3
 BuildConflicts: gem(concurrent-ruby) >= 2
+BuildConflicts: gem(dhcpsapi) >= 1.0.0
+BuildConflicts: gem(logging-journald) >= 3
+BuildConflicts: gem(mocha) >= 3
+BuildConflicts: gem(rexml) >= 4
+BuildConflicts: gem(rsec) >= 2
 BuildConflicts: gem(rubocop) >= 2
 BuildConflicts: gem(rubocop-performance) >= 2
+BuildConflicts: gem(ruby-prof) >= 2
+BuildConflicts: gem(sd_notify) >= 1
+BuildConflicts: gem(sinatra) >= 5
+BuildConflicts: gem(webrick) >= 2
+BuildConflicts: gem(xmlrpc) >= 1
 %endif
 
 %add_findreq_skiplist %ruby_gemslibdir/**/*
 %add_findprov_skiplist %ruby_gemslibdir/**/*
+%ruby_use_gem_dependency ci_reporter >= 2.0.0,ci_reporter < 3
+%ruby_use_gem_dependency mocha >= 2.7,mocha < 3
+%ruby_use_gem_dependency rsec >= 1.0,rsec < 2
+%ruby_use_gem_dependency rubocop >= 1.56.0,rubocop < 2
+%ruby_use_gem_dependency rubocop-performance >= 1.11.3,rubocop-performance < 2
+%ruby_use_gem_dependency ruby-prof >= 1.7,ruby-prof < 2
+%ruby_use_gem_dependency sinatra >= 2.0,sinatra < 5
 %ruby_use_gem_dependency rack >= 2.0
-%ruby_use_gem_dependency rsec >= 1.0
-%ruby_use_gem_dependency rubocop-performance >= 1.11.3
-%ruby_use_gem_dependency rexml >= 3.2
-%ruby_use_gem_dependency rubocop >= 1.56
-%ruby_use_gem_dependency ci_reporter >= 2.0.0
-%ruby_use_gem_dependency mocha >= 2.7
-%ruby_use_gem_dependency sinatra >= 2.0
-%ruby_use_gem_dependency ruby-prof >= 1.7
-%ruby_use_gem_dependency webrick >= 1.0
-%ruby_use_gem_dependency sd_notify >= 0.1
 %ruby_alias_names smart_proxy,smart-proxy
+%ruby_regard_path_tokens templates
 Requires:      railsctl >= 1.0.1-alt2
-Requires:      gem(smart_proxy_discovery_image) >= 1.6.0
-Requires:      ruby >= 2.7
+Requires:      ruby >= 3.0
+Requires:      gem(base64) >= 0
 Requires:      gem(json) >= 0
 Requires:      gem(logging) >= 0
 Requires:      gem(ostruct) >= 0
@@ -75,12 +98,16 @@ Requires:      gem(rack) >= 2.0
 Requires:      gem(rexml) >= 3.2
 Requires:      gem(sd_notify) >= 0.1
 Requires:      gem(sinatra) >= 2.0
+Requires:      gem(smart_proxy_discovery_image) >= 1.6.0
 Requires:      gem(webrick) >= 1.0
 Conflicts:     gem-smart-proxy-compat
+Conflicts:     gem(rexml) >= 4
+Conflicts:     gem(sd_notify) >= 1
+Conflicts:     gem(sinatra) >= 5
+Conflicts:     gem(webrick) >= 2
 Provides:      gem(smart_proxy) = 3.19.2
 
 %ruby_use_gem_version smart_proxy:3.19.2
-%ruby_regard_path_tokens templates
 
 %description
 Smart Proxy is a free open source project that provides restful API to
@@ -94,19 +121,19 @@ Currently Supported modules:
 * DNS - Bind and MS DNS Servers
 * Puppet - Any Puppet server from 0.24.x
 * Puppet CA - Manage certificate signing, cleaning and autosign on a Puppet CA
-  server
+server
 * Realm - Manage host registration to a realm (e.g. FreeIPA)
 * TFTP - any UNIX based tftp server
 * Facts - module to gather facts from facter (used only on discovered nodes)
 * HTTPBoot - endpoint exposing a (TFTP) directory via HTTP(s) for UEFI HTTP
-  booting
+booting
 * Logs - log buffer of proxy logs for easier troubleshooting
 * Templates - unattended Foreman endpoint proxy
 
 
 %package       -n smart-proxy
 Version:       3.19.2
-Release:       alt3
+Release:       alt4
 Summary:       RESTful proxies for DNS, DHCP, TFTP, BMC and Puppet executable(s)
 Summary(ru_RU.UTF-8): Исполнямка для самоцвета smart_proxy
 Group:         Other
@@ -114,7 +141,6 @@ BuildArch:     noarch
 
 Requires:      gem(benchmark-ips) >= 0
 Requires:      gem(ci_reporter) >= 1.6.3
-Requires:      gem(concurrent-ruby) >= 1.0
 Requires:      gem(facter) >= 0
 Requires:      gem(redfish_client) >= 0.6.0
 Requires:      gem(rubyipmi) >= 0.10.0
@@ -135,8 +161,6 @@ Requires:      gem(ruby-prof) >= 1.7
 Requires:      gem(ruby-libvirt) >= 0.6.0
 Requires:      gem(jwt) >= 0
 Requires:      gem(xmlrpc) >= 0.2
-Requires:      gem(rubocop-rake) >= 0
-Requires:      gem(smart_proxy) = 3.19.2
 Requires:      gem(smart_proxy_salt) >= 2.0
 Requires:      gem(smart_proxy_dynflow) >= 0.5
 Requires:      gem(smart_proxy_remote_execution_ssh) >= 0.4.1
@@ -145,13 +169,16 @@ Requires:      gem(smart_proxy_discovery) >= 1.0.5
 Requires:      gem(smart_proxy_pulp) >= 2.1.0
 Requires:      gem(smart_proxy_chef) >= 0.2.0
 Requires:      gem(webmock) >= 0
-Conflicts:     gem(concurrent-ruby) >= 2
+Requires:      gem(smart_proxy) = 3.19.2
+Requires:      gem(concurrent-ruby) >= 1.0
+Requires:      gem(smart_proxy_discovery_image) >= 1.6.0
 Conflicts:     smart-proxy-compat
+Conflicts:     gem(concurrent-ruby) >= 2
 
 %description   -n smart-proxy
 RESTful proxies for DNS, DHCP, TFTP, BMC and Puppet executable(s).
 
-Smart Proxy is a free open source project that provides restful API te
+Smart Proxy is a free open source project that provides restful API to
 subsystems such as DNS, DHCP, etc, for higher level orchestration tools such as
 Foreman.
 
@@ -162,12 +189,12 @@ Currently Supported modules:
 * DNS - Bind and MS DNS Servers
 * Puppet - Any Puppet server from 0.24.x
 * Puppet CA - Manage certificate signing, cleaning and autosign on a Puppet CA
-  server
+server
 * Realm - Manage host registration to a realm (e.g. FreeIPA)
 * TFTP - any UNIX based tftp server
 * Facts - module to gather facts from facter (used only on discovered nodes)
 * HTTPBoot - endpoint exposing a (TFTP) directory via HTTP(s) for UEFI HTTP
-  booting
+booting
 * Logs - log buffer of proxy logs for easier troubleshooting
 * Templates - unattended Foreman endpoint proxy
 
@@ -178,7 +205,7 @@ Currently Supported modules:
 %if_enabled    doc
 %package       -n gem-smart-proxy-doc
 Version:       3.19.2
-Release:       alt3
+Release:       alt4
 Summary:       RESTful proxies for DNS, DHCP, TFTP, BMC and Puppet documentation files
 Summary(ru_RU.UTF-8): Файлы сведений для самоцвета smart_proxy
 Group:         Development/Documentation
@@ -200,12 +227,12 @@ Currently Supported modules:
 * DNS - Bind and MS DNS Servers
 * Puppet - Any Puppet server from 0.24.x
 * Puppet CA - Manage certificate signing, cleaning and autosign on a Puppet CA
-  server
+server
 * Realm - Manage host registration to a realm (e.g. FreeIPA)
 * TFTP - any UNIX based tftp server
 * Facts - module to gather facts from facter (used only on discovered nodes)
 * HTTPBoot - endpoint exposing a (TFTP) directory via HTTP(s) for UEFI HTTP
-  booting
+booting
 * Logs - log buffer of proxy logs for easier troubleshooting
 * Templates - unattended Foreman endpoint proxy
 
@@ -217,38 +244,56 @@ Currently Supported modules:
 %if_enabled    devel
 %package       -n gem-smart-proxy-devel
 Version:       3.19.2
-Release:       alt3
+Release:       alt4
 Summary:       RESTful proxies for DNS, DHCP, TFTP, BMC and Puppet development package
 Summary(ru_RU.UTF-8): Файлы для разработки самоцвета smart_proxy
 Group:         Development/Ruby
 BuildArch:     noarch
 
-Requires:      gem(smart_proxy) = 3.19.2
-Requires:      gem(benchmark-ips) >= 0
-Requires:      gem(ci_reporter) >= 1.6.3
-Requires:      gem(concurrent-ruby) >= 1.0
-Requires:      gem(facter) >= 0
 Requires:      gem(json) >= 0
 Requires:      gem(logging) >= 0
-Requires:      gem(mocha) >= 1.10
-Requires:      gem(pry) >= 0
 Requires:      gem(rack) >= 1.3
-Requires:      gem(rack-test) >= 0
-Requires:      gem(rake) >= 0
-Requires:      gem(rdoc) >= 0
-Requires:      gem(rubocop) >= 1.56.0
-Requires:      gem(rubocop-performance) >= 1.5.2
-Requires:      gem(rubocop-rake) >= 0
-Requires:      gem(ruby-prof) >= 1.7
 Requires:      gem(sd_notify) >= 0.1
 Requires:      gem(sinatra) >= 2.0
+Requires:      gem(webrick) >= 1.0
+Requires:      gem(smart_proxy) = 3.19.2
+Requires:      gem(benchmark-ips) >= 0
+Requires:      gem(ci_reporter) >= 2.0.0
+Requires:      gem(concurrent-ruby) >= 1.0
+Requires:      gem(dhcpsapi) >= 0.0.11
+Requires:      gem(facter) >= 0
+Requires:      gem(gssapi) >= 0
+Requires:      gem(jwt) >= 0
+Requires:      gem(logging-journald) >= 2.0
+Requires:      gem(mocha) >= 2.7
+Requires:      gem(pry) >= 0
+Requires:      gem(rack-test) >= 0
+Requires:      gem(rake) >= 0
+Requires:      gem(rb-inotify) >= 0
+Requires:      gem(rb-kqueue) >= 0
+Requires:      gem(rdoc) >= 0
+Requires:      gem(redfish_client) >= 0.8.0
+Requires:      gem(rkerberos) >= 0.1.1
+Requires:      gem(rsec) >= 1.0
+Requires:      gem(rubocop) >= 1.56.0
+Requires:      gem(rubocop-performance) >= 1.11.3
+Requires:      gem(rubocop-rake) >= 0
+Requires:      gem(ruby-libvirt) >= 0.6.0
+Requires:      gem(ruby-prof) >= 1.7
+Requires:      gem(rubyipmi) >= 0.12.1
 Requires:      gem(test-unit) >= 0
 Requires:      gem(webmock) >= 0
-Requires:      gem(webrick) >= 1.0
+Requires:      gem(xmlrpc) >= 0.2
+Conflicts:     gem(ci_reporter) >= 3
 Conflicts:     gem(concurrent-ruby) >= 2
+Conflicts:     gem(dhcpsapi) >= 1.0.0
+Conflicts:     gem(logging-journald) >= 3
+Conflicts:     gem(mocha) >= 3
+Conflicts:     gem(rsec) >= 2
 Conflicts:     gem(rubocop) >= 2
 Conflicts:     gem(rubocop-performance) >= 2
-Conflicts:     gem(webrick) >= 2
+Conflicts:     gem(ruby-prof) >= 2
+Conflicts:     gem(xmlrpc) >= 1
 
 %description   -n gem-smart-proxy-devel
 RESTful proxies for DNS, DHCP, TFTP, BMC and Puppet development package.
@@ -264,12 +309,12 @@ Currently Supported modules:
 * DNS - Bind and MS DNS Servers
 * Puppet - Any Puppet server from 0.24.x
 * Puppet CA - Manage certificate signing, cleaning and autosign on a Puppet CA
-  server
+server
 * Realm - Manage host registration to a realm (e.g. FreeIPA)
 * TFTP - any UNIX based tftp server
 * Facts - module to gather facts from facter (used only on discovered nodes)
 * HTTPBoot - endpoint exposing a (TFTP) directory via HTTP(s) for UEFI HTTP
-  booting
+booting
 * Logs - log buffer of proxy logs for easier troubleshooting
 * Templates - unattended Foreman endpoint proxy
 
@@ -301,6 +346,7 @@ install -Dm644 %SOURCE4 %buildroot%_sysconfdir/smart-proxy/config/settings.d/pup
 
 %check
 %ruby_test
+%__ruby -e 'Gem.use_paths(Gem.dir, ["%buildroot%ruby_gemhome", *Gem.path]); gem "smart_proxy", "= %version"; s = Gem.loaded_specs.fetch("smart_proxy"); abort "Host did not load from the staged installation" unless s.full_gem_path.start_with?("%buildroot/"); abort "Plugin dependency is missing" unless s.runtime_dependencies.any? { |d| d.name == "smart_proxy_discovery_image" }; require "smart_proxy_for_testing"; require "smart_proxy_discovery_image"; require "smart_proxy_discovery_image/power_api"; require "smart_proxy_discovery_image/inventory_api"; abort "Wrong host version" unless Proxy::VERSION == "%version"; abort "Plugin did not load" unless Proxy::DiscoveryImage::Plugin < Proxy::Plugin; puts "Staged Smart Proxy #{Proxy::VERSION}: discovery image dependency and both APIs verified"'
 
 %pre           -n smart-proxy
 getent group puppet >/dev/null || %_sbindir/groupadd -r puppet
@@ -315,7 +361,6 @@ rm -rf %_localstatedir/smart-proxy/Gemfile.lock
 %preun         -n smart-proxy
 %preun_service smart-proxy
 
-
 %files
 %doc README.md CHANGELOG Contributors LICENSE
 %ruby_gemspec
@@ -323,7 +368,6 @@ rm -rf %_localstatedir/smart-proxy/Gemfile.lock
 %config(noreplace) %_sysconfdir/smart-proxy/config/settings.yml
 %config(noreplace) %_sysconfdir/smart-proxy/config/settings.d/*.yml.example
 %config(noreplace) %_sysconfdir/smart-proxy/config/settings.d/puppetca_http_api.yml
-
 
 %files         -n smart-proxy
 %doc README.md CHANGELOG Contributors LICENSE
@@ -347,6 +391,11 @@ rm -rf %_localstatedir/smart-proxy/Gemfile.lock
 
 
 %changelog
+* Wed Nov 11 2026 Pavel Skrylev <majioa@altlinux.org> 3.19.2-alt4
+- * move ALT package assets out of .gear and pin the source tag
+- * regenerate the spec while preserving ALT scripts and file ownership
+- + check staged plugin metadata and API loading
+
 * Tue Nov 10 2026 Pavel Skrylev <majioa@altlinux.org> 3.19.2-alt3
 - + require smart_proxy_discovery_image in Gemfile and gem metadata
 
