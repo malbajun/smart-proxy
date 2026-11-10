@@ -4,4 +4,3 @@ copy: .gear/settings.yml
 copy: .gear/smart-proxy.service
 copy: .gear/smart-proxy.conf
 copy: .gear/puppetca_http_api.yml
-copy: .gear/setup-rb-compat.rb
