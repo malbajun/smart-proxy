@@ -1,8 +1,7 @@
-tar: @version@:.
+tar: .
 spec: .gear/gem-smart-proxy.spec
-copy?: .gear/*.service
-copy?: .gear/*.patch
-copy?: .gear/*.yml
-copy?: .gear/*.conf
-copy?: .gear/Gemfile
-diff: @version@:. . exclude=.gear/
+copy: .gear/settings.yml
+copy: .gear/smart-proxy.service
+copy: .gear/smart-proxy.conf
+copy: .gear/puppetca_http_api.yml
+copy: .gear/setup-rb-compat.rb
